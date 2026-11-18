@@ -126,7 +126,10 @@
 
     <!-- Right Controls -->
     <div class="flex items-center gap-2">
-      <button id="soundToggleBtn" onclick="toggleAudio()" class="px-3.5 py-2 rounded-xl bg-slate-900/70 border border-slate-700/80 hover:border-amber-400 text-xs md:text-sm text-slate-300 hover:text-amber-300 transition-all flex items-center gap-2 backdrop-blur shadow-md" title="เปิด/ปิดทำนองเพลงลอยกระทง">
+      <!-- ไฟล์เพลง song.mp3 -->
+      <audio id="bgMusic" src="song.mp3" loop preload="auto"></audio>
+
+      <button id="soundToggleBtn" onclick="toggleAudio()" class="px-3.5 py-2 rounded-xl bg-slate-900/70 border border-slate-700/80 hover:border-amber-400 text-xs md:text-sm text-slate-300 hover:text-amber-300 transition-all flex items-center gap-2 backdrop-blur shadow-md" title="เปิด/ปิดเพลงลอยกระทง">
         <i id="soundIcon" class="fa-solid fa-music text-slate-400"></i>
         <span id="soundText" class="hidden sm:inline">เปิดเพลงลอยกระทง</span>
       </button>
@@ -340,7 +343,7 @@
     }
 
     /* ----------------------------------------------------
-       1. DATA STRUCTURES & KRATHONG MODELS
+1. DATA STRUCTURES & KRATHONG MODELS
     ---------------------------------------------------- */
     const KRATHONG_STYLES = [
       {
@@ -450,11 +453,9 @@
     let selectedKrathongId = null;
     let isAudioPlaying = false;
     let audioContext = null;
-    let musicTimeout = null;
-    let melodyStep = 0;
 
     /* ----------------------------------------------------
-       2. INITIALIZATION & FIREBASE REALTIME LISTENER
+2. INITIALIZATION & FIREBASE REALTIME LISTENER
     ---------------------------------------------------- */
     window.addEventListener('DOMContentLoaded', () => {
       initStars();
@@ -526,7 +527,7 @@
     }
 
     /* ----------------------------------------------------
-       3. BACKGROUND VISUALS (Stars, Moon, Lanterns)
+3. BACKGROUND VISUALS (Stars, Moon, Lanterns)
     ---------------------------------------------------- */
     function initStars() {
       const canvas = document.getElementById('starsCanvas');
@@ -621,7 +622,7 @@
     }
 
     /* ----------------------------------------------------
-       4. RIVER & KRATHONG RENDERING & FLOATING TEXTBOX
+4. RIVER & KRATHONG RENDERING & FLOATING TEXTBOX
     ---------------------------------------------------- */
     function renderRiverKrathongs() {
       const stage = document.getElementById('riverStage');
@@ -698,7 +699,7 @@
     }
 
     /* ----------------------------------------------------
-       5. MODAL INTERACTION & FORMS
+5. MODAL INTERACTION & FORMS
     ---------------------------------------------------- */
     function renderStyleSelector() {
       const container = document.getElementById('krathongSelector');
@@ -801,7 +802,7 @@
     }
 
     /* ----------------------------------------------------
-       6. DETAIL MODAL & HEARTS / CHEERS
+6. DETAIL MODAL & HEARTS / CHEERS
     ---------------------------------------------------- */
     function openDetailModal(item) {
       selectedKrathongId = item.id;
@@ -876,7 +877,7 @@
     }
 
     /* ----------------------------------------------------
-       7. FEED MODAL (VIEW ALL)
+7. FEED MODAL (VIEW ALL)
     ---------------------------------------------------- */
     function openFeedModal() {
       const list = document.getElementById('feedList');
@@ -947,33 +948,8 @@
     }
 
     /* ----------------------------------------------------
-       8. LOY KRATHONG MELODY SYNTHESIZER (รำวงลอยกระทง)
+8. BACKGROUND MUSIC (song.mp3) & SOUND EFFECTS
     ---------------------------------------------------- */
-    const NOTE_FREQS = {
-      C4: 261.63, D4: 293.66, E4: 329.63, G4: 392.00, A4: 440.00,
-      C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99, REST: 0
-    };
-
-    const LOY_KRATHONG_MELODY = [
-      // วัน-เพ็ญ-เดือน-สิบ-สอง
-      { n: 'G4', d: 0.35 }, { n: 'G4', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'D5', d: 0.75 },
-      // น้ำ-ก็-นอง-เต็ม-ต-ลิ่ง
-      { n: 'E5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'G4', d: 0.35 }, { n: 'A4', d: 0.75 },
-      // เรา-ทั้ง-หลาย-ชาย-หญิง
-      { n: 'C5', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'E5', d: 0.35 }, { n: 'G5', d: 0.75 },
-      // ส-นุก-กัน-จริง-วัน-ลอย-ก-ระ-ทง
-      { n: 'E5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'G4', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'C5', d: 0.9 },
-      { n: 'REST', d: 0.3 },
-      // ลอย-ลอย-ก-ระ-ทง (รอบ 1)
-      { n: 'G5', d: 0.45 }, { n: 'E5', d: 0.45 }, { n: 'D5', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'D5', d: 0.75 },
-      // ลอย-ลอย-ก-ระ-ทง (รอบ 2)
-      { n: 'E5', d: 0.45 }, { n: 'D5', d: 0.45 }, { n: 'C5', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'G4', d: 0.75 },
-      // ลอย-ก-ระ-ทง-กัน-แล้ว-ขอ-เชิญ-น้อง-แก้ว-ออก-มา-รำ-วง
-      { n: 'G4', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'E5', d: 0.35 }, { n: 'G5', d: 0.55 },
-      { n: 'E5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'G4', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'C5', d: 0.9 },
-      { n: 'REST', d: 0.8 }
-    ];
-
     function initAudioContext() {
       if (!audioContext) {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -1002,17 +978,6 @@
       } catch (e) {}
     }
 
-    function playNextMelodyNote() {
-      if (!isAudioPlaying) return;
-      const item = LOY_KRATHONG_MELODY[melodyStep];
-      const freq = NOTE_FREQS[item.n];
-      if (freq > 0) {
-        playChimeNote(freq, item.d * 1.4);
-      }
-      melodyStep = (melodyStep + 1) % LOY_KRATHONG_MELODY.length;
-      musicTimeout = setTimeout(playNextMelodyNote, item.d * 1000);
-    }
-
     function playWishSound() {
       try {
         initAudioContext();
@@ -1023,27 +988,34 @@
     }
 
     function toggleAudio() {
-      initAudioContext();
-      isAudioPlaying = !isAudioPlaying;
+      const bgMusic = document.getElementById('bgMusic');
       const icon = document.getElementById('soundIcon');
       const text = document.getElementById('soundText');
 
-      if (isAudioPlaying) {
-        icon.className = 'fa-solid fa-volume-high text-amber-400 animate-pulse';
-        text.innerText = 'ปิดเพลงลอยกระทง';
-        text.className = 'text-amber-300 hidden sm:inline';
-        melodyStep = 0;
-        playNextMelodyNote();
+      if (!bgMusic) return;
+
+      if (!isAudioPlaying) {
+        bgMusic.volume = 0.5;
+        bgMusic.play().then(() => {
+          isAudioPlaying = true;
+          icon.className = 'fa-solid fa-volume-high text-amber-400 animate-pulse';
+          text.innerText = 'ปิดเพลงลอยกระทง';
+          text.className = 'text-amber-300 hidden sm:inline';
+        }).catch((err) => {
+          console.error('ไม่สามารถเล่นไฟล์เพลง song.mp3 ได้:', err);
+          alert('ไม่พบไฟล์ song.mp3 หรือไฟล์เสียงไม่รองรับ กรุณาตรวจสอบว่ามีไฟล์ song.mp3 อยู่ในโฟลเดอร์เดียวกับหน้าเว็บค่ะ');
+        });
       } else {
+        bgMusic.pause();
+        isAudioPlaying = false;
         icon.className = 'fa-solid fa-music text-slate-400';
         text.innerText = 'เปิดเพลงลอยกระทง';
         text.className = 'text-slate-300 hidden sm:inline';
-        if (musicTimeout) clearTimeout(musicTimeout);
       }
     }
 
     /* ----------------------------------------------------
-       9. HELPERS
+9. HELPERS
     ---------------------------------------------------- */
     function escapeHtml(str) {
       if (!str) return '';
