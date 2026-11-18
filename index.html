@@ -109,4 +109,951 @@
 
     <!-- Full Moon with Halo -->
     <div class="absolute top-6 right-8 md:top-10 md:right-24 flex items-center justify-center">
-      <div class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-tr from-amber-200 via-amber-100 to-yellow-50 shadow-[0_0_80px_25px_rgba(255,235,160,0.45)]
+      <div class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-tr from-amber-200 via-amber-100 to-yellow-50 shadow-[0_0_80px_25px_rgba(255,235,160,0.45)] relative">
+        <div class="absolute top-6 left-6 w-7 h-7 bg-amber-300/25 rounded-full blur-[2px]"></div>
+        <div class="absolute bottom-8 right-8 w-10 h-10 bg-amber-300/20 rounded-full blur-[3px]"></div>
+        <div class="absolute top-14 right-10 w-5 h-5 bg-amber-300/20 rounded-full blur-[2px]"></div>
+      </div>
+      <div class="absolute -bottom-4 -left-12 w-48 h-10 bg-indigo-950/40 blur-xl rounded-full"></div>
+    </div>
+
+    <!-- Sky Lanterns Container -->
+    <div id="skyLanterns" class="absolute inset-0 overflow-hidden"></div>
+  </div>
+
+  <!-- ==================== HEADER & TOP NAV ==================== -->
+  <header class="relative z-20 px-4 pt-4 md:px-8 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30 text-2xl border border-amber-300/50">
+        🪷
+      </div>
+      <div>
+        <h1 class="text-xl md:text-2xl font-bold tracking-tight bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 bg-clip-text text-transparent flex items-center gap-2">
+          ลอยกระทงออนไลน์ <span class="text-xs bg-amber-500/20 border border-amber-400/40 text-amber-300 px-2.5 py-0.5 rounded-full font-normal hidden sm:inline">Sithiporn Associates</span>
+        </h1>
+        <p class="text-xs text-blue-200/80 flex items-center gap-1.5">
+          <span>ปล่อยใจลอยไปกับสายน้ำ✨</span>
+          <span id="dbStatusBadge" class="text-[10px] px-2 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">● เชื่อมต่อสด</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-2">
+      <button id="soundToggleBtn" onclick="toggleAudio()" class="px-3.5 py-2 rounded-xl bg-slate-900/70 border border-slate-700/80 hover:border-amber-400 text-xs md:text-sm text-slate-300 hover:text-amber-300 transition-all flex items-center gap-2 backdrop-blur shadow-md" title="เปิด/ปิดเสียงบรรยากาศยามค่ำคืน">
+        <i id="soundIcon" class="fa-solid fa-volume-xmark text-slate-400"></i>
+        <span id="soundText" class="hidden sm:inline">เสียงบรรยากาศ</span>
+      </button>
+
+      <div class="px-3.5 py-2 rounded-xl bg-amber-500/10 border border-amber-400/30 text-xs md:text-sm text-amber-200 font-medium flex items-center gap-2 backdrop-blur">
+        <span>กระทงในสายน้ำ:</span>
+        <span id="krathongCountBadge" class="bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-md">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN RIVER CANVAS AREA ==================== -->
+  <main class="relative z-10 flex-1 flex flex-col justify-end w-full overflow-hidden select-none">
+    
+    <!-- Floating instruction banner -->
+    <div class="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none text-center px-4">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/60 border border-blue-400/20 text-xs text-blue-200/90 backdrop-blur-md shadow-lg shadow-black/40">
+        <span class="animate-pulse text-amber-400">●</span> Happy Loy Krathong Day ✨
+      </div>
+    </div>
+
+    <!-- RIVER SECTION -->
+    <div class="relative w-full h-[58vh] md:h-[62vh] overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-[#0a1532]/20 via-[#0b254a]/85 to-[#051a36]"></div>
+      <div class="absolute top-0 right-10 md:right-28 w-24 md:w-32 h-full opacity-35 bg-gradient-to-b from-amber-200/40 via-amber-300/15 to-transparent blur-md pointer-events-none transform -skew-x-6"></div>
+
+      <div class="absolute top-0 left-0 right-0 h-16 opacity-30 pointer-events-none wave-bg">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-full h-full text-cyan-300 fill-current">
+          <path d="M0,0 C150,90 350,-40 500,40 C650,120 900,10 1200,30 L1200,120 L0,120 Z"></path>
+        </svg>
+      </div>
+      <div class="absolute top-20 left-0 right-0 h-24 opacity-20 pointer-events-none wave-bg" style="animation-duration: 11s; animation-direction: reverse;">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-full h-full text-blue-300 fill-current">
+          <path d="M0,20 C200,100 450,10 700,70 C950,130 1100,20 1200,50 L1200,120 L0,120 Z"></path>
+        </svg>
+      </div>
+
+      <div id="waterRipples" class="absolute inset-0 pointer-events-none"></div>
+      <div id="riverStage" class="absolute inset-0 w-full h-full overflow-hidden"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-[#040814] via-[#040814]/70 to-transparent pointer-events-none"></div>
+    </div>
+  </main>
+
+  <!-- ==================== BOTTOM FLOATING ACTION BAR ==================== -->
+  <footer class="relative z-20 px-4 pb-6 pt-2 flex flex-col items-center">
+    <div class="flex flex-wrap items-center justify-center gap-3 w-full max-w-xl">
+      <button onclick="openCreateModal()" class="w-full sm:w-auto flex-1 group px-6 py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-bold text-base md:text-lg shadow-[0_0_30px_rgba(251,191,36,0.5)] hover:shadow-[0_0_40px_rgba(251,191,36,0.7)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3">
+        <span class="text-2xl group-hover:rotate-12 transition-transform">🪷</span>
+        <span>ลอยกระทงปล่อยใจ</span>
+        <i class="fa-solid fa-arrow-right-long text-slate-900 group-hover:translate-x-1 transition-transform"></i>
+      </button>
+
+      <button onclick="openFeedModal()" class="px-5 py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-amber-400/30 text-amber-300 hover:text-amber-200 font-medium text-sm md:text-base backdrop-blur-md transition-all flex items-center gap-2 shadow-lg">
+        <i class="fa-solid fa-book-open-reader"></i>
+        <span>อ่านคำอวยพรทั้งหมด</span>
+      </button>
+    </div>
+    
+    <div class="text-[11px] text-slate-400/80 mt-2 font-cute">
+      ✨ กิจกรรมลอยกระทงออนไลน์เพื่อชาวออฟฟิศ • รักษ์โลก 100% ไร้ขยะ ปล่อยความเครียด รับความสุข
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL 1: CREATE KRATHONG ==================== -->
+  <div id="createModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+    <div class="glass-modal w-full max-w-lg rounded-3xl p-6 md:p-7 shadow-2xl relative max-h-[92vh] overflow-y-auto transform scale-95 transition-transform duration-300" id="createModalContent">
+      
+      <button onclick="closeCreateModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center mb-5">
+        <span class="text-3xl">🪷</span>
+        <h2 class="text-xl md:text-2xl font-bold text-amber-300 mt-1">ประดิษฐ์กระทงออฟฟิศ</h2>
+        <p class="text-xs text-blue-200/80">ลอยเรื่องนอยด์ๆ ทิ้งลงน้ำ แล้วเติมไฟรับสิ่งดีๆ สู่ชีวิตทำงาน</p>
+      </div>
+
+      <form id="krathongForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+        
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">ชื่อ / แผนก <span class="text-amber-400">*</span></label>
+          <input type="text" id="authorName" required placeholder="เช่น พี่เอ HR, ลิซ่า BP" 
+            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none text-sm text-white placeholder-slate-500">
+        </div>
+
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="anonCheck" onchange="toggleAnonymous(this)" class="w-4 h-4 rounded text-amber-500 focus:ring-amber-400 bg-slate-900 border-slate-700">
+          <label for="anonCheck" class="text-xs text-slate-400 cursor-pointer">ขอไม่ระบุชื่อ (ใช้ฉายา: บุคคลลึกลับประจำออฟฟิศ 🕶️)</label>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-2">เลือกสไตล์กระทงของคุณ</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="krathongSelector"></div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-amber-300 mb-1 flex items-center gap-1.5">
+            <i class="fa-solid fa-sparkles text-amber-400"></i> คำอธิษฐาน <span class="text-amber-400">*</span>
+          </label>
+          <textarea id="wishMessage" required rows="3" placeholder="เขียนสิ่งที่อยากลอยทิ้งไป หรือคำอธิษฐานขอพรรับพลังบวก เช่น ลอยความเหนื่อยล้า ขอให้โบนัสจัดเต็ม งานผ่านฉลุย..." 
+            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-amber-500/30 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none text-sm text-amber-50 placeholder-slate-500"></textarea>
+        </div>
+
+        <div class="pt-2">
+          <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-bold text-base shadow-lg shadow-amber-500/30 transition-all flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>ปล่อยกระทงลงสู่แม่น้ำ</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: VIEW KRATHONG DETAIL ==================== -->
+  <div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+    <div class="glass-modal w-full max-w-md rounded-3xl p-6 shadow-2xl relative transform scale-95 transition-transform duration-300" id="detailModalContent">
+      
+      <button onclick="closeDetailModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex flex-col items-center text-center pb-4 border-b border-slate-700/60">
+        <div id="detailKrathongIcon" class="w-20 h-20 mb-2 flex items-center justify-center text-5xl filter drop-shadow-[0_0_15px_rgba(251,191,36,0.6)]">
+          🪷
+        </div>
+        <div class="inline-block px-3 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 text-xs mb-1" id="detailKrathongType">
+          กระทงใบตองดั้งเดิม
+        </div>
+        <h3 class="text-xl font-bold text-white flex items-center gap-2" id="detailAuthor">
+          พี่เอ HR
+        </h3>
+        <span class="text-[11px] text-slate-400 mt-1" id="detailTime">เพิ่งลอยเมื่อสักครู่</span>
+      </div>
+
+      <div class="py-4">
+        <div class="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/25">
+          <div class="text-xs font-semibold text-amber-400 flex items-center gap-1.5 mb-1.5">
+            <i class="fa-solid fa-sparkles"></i> คำอธิษฐาน & ข้อความลอยใจ:
+          </div>
+          <p class="text-sm text-amber-100 font-cute leading-relaxed" id="detailMessage">
+            -
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-2 flex items-center justify-between gap-3">
+        <button id="cheerBtn" onclick="cheerCurrentKrathong()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 text-white font-medium text-sm transition-all shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2 active:scale-95">
+          <i class="fa-solid fa-heart text-base"></i>
+          <span>ส่งกำลังใจให้เพื่อน (<span id="detailCheerCount">0</span>)</span>
+        </button>
+        <button onclick="closeDetailModal()" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-medium transition-colors">
+          ปิด
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 3: ALL WISHES FEED ==================== -->
+  <div id="feedModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+    <div class="glass-modal w-full max-w-2xl rounded-3xl p-6 shadow-2xl relative max-h-[88vh] flex flex-col transform scale-95 transition-transform duration-300" id="feedModalContent">
+      
+      <button onclick="closeFeedModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="mb-4">
+        <h2 class="text-xl font-bold text-amber-300 flex items-center gap-2">
+          <span>📜</span> กระดานคำอวยพรชาวออฟฟิศทั้งหมด
+        </h2>
+        <p class="text-xs text-slate-400">ร่วมอ่านข้อความปล่อยใจและกดหัวใจเติมพลังให้เพื่อนร่วมงาน</p>
+      </div>
+
+      <div id="feedList" class="flex-1 overflow-y-auto space-y-3 pr-1"></div>
+
+      <div class="pt-4 border-t border-slate-700/60 mt-2 flex justify-between items-center text-xs text-slate-400">
+        <span>พลังใจเต็มเปี่ยมไปด้วยกัน 💖</span>
+        <button onclick="closeFeedModal()" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200">ปิดหน้าต่าง</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="floatingHeartsOverlay" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    /* ====================================================
+       FIREBASE CONFIGURATION
+    ==================================================== */
+    const firebaseConfig = {
+      apiKey: "AIzaSyCnS3I16YymIJP5CGWowOFP4jCFg0q6nuw",
+      authDomain: "loy-kratong-day-2026.firebaseapp.com",
+      databaseURL: "https://loy-kratong-day-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "loy-kratong-day-2026",
+      storageBucket: "loy-kratong-day-2026.firebasestorage.app",
+      messagingSenderId: "959586354183",
+      appId: "1:959586354183:web:de33795450e40bbe3b96a2",
+      measurementId: "G-LT662MVP6P"
+    };
+
+    let db = null;
+    let isFirebaseReady = false;
+    try {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.database();
+      isFirebaseReady = true;
+    } catch (err) {
+      console.error("Firebase Init Error:", err);
+      document.getElementById('dbStatusBadge').innerText = '● การเชื่อมต่อขัดข้อง';
+      document.getElementById('dbStatusBadge').className = 'text-[10px] px-2 py-0.2 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30';
+    }
+
+    /* ----------------------------------------------------
+       1. DATA STRUCTURES & KRATHONG MODELS
+    ---------------------------------------------------- */
+    const KRATHONG_STYLES = [
+      {
+        id: 'traditional',
+        name: 'กระทงใบตอง',
+        desc: 'ดั้งเดิม คลาสสิก ปราณีต',
+        icon: '🪷',
+        glow: '#10b981',
+        svg: `<svg viewBox="0 0 100 80" class="w-full h-full drop-shadow-[0_0_10px_rgba(255,183,3,0.7)]">
+          <ellipse cx="50" cy="14" rx="4" ry="9" fill="#ffb703" class="candle-flame" />
+          <ellipse cx="50" cy="15" rx="2" ry="5" fill="#fff" class="candle-flame" />
+          <line x1="44" y1="20" x2="38" y2="35" stroke="#e07a5f" stroke-width="1.8" />
+          <line x1="47" y1="18" x2="44" y2="35" stroke="#f4f1de" stroke-width="1.8" />
+          <circle cx="38" cy="20" r="1.5" fill="#e63946" class="animate-pulse" />
+          <rect x="48" y="22" width="4.5" height="15" fill="#fff" rx="1.5" />
+          <circle cx="43" cy="38" r="5" fill="#f72585" />
+          <circle cx="56" cy="38" r="5" fill="#ffd166" />
+          <circle cx="50" cy="36" r="4.5" fill="#ff9e00" />
+          <path d="M15,48 Q50,75 85,48 Q70,72 50,72 Q30,72 15,48 Z" fill="#2d6a4f" />
+          <path d="M22,44 Q50,66 78,44 Q65,65 50,65 Q35,65 22,44 Z" fill="#52b788" />
+          <path d="M30,42 Q50,58 70,42 Q50,56 30,42 Z" fill="#74c69d" />
+        </svg>`
+      },
+      {
+        id: 'fish_food',
+        name: 'กระทงอาหารปลา',
+        desc: 'อิ่มใจ น้องปลาอิ่มท้อง',
+        icon: '🍞',
+        glow: '#f59e0b',
+        svg: `<svg viewBox="0 0 100 80" class="w-full h-full drop-shadow-[0_0_10px_rgba(251,191,36,0.7)]">
+          <ellipse cx="50" cy="14" rx="4" ry="9" fill="#ffb703" class="candle-flame" />
+          <rect x="48" y="22" width="4.5" height="15" fill="#ffeaa7" rx="1" />
+          <ellipse cx="50" cy="54" rx="34" ry="14" fill="#d97706" />
+          <ellipse cx="50" cy="50" rx="30" ry="12" fill="#f59e0b" />
+          <circle cx="35" cy="46" r="4" fill="#ec4899" />
+          <circle cx="45" cy="44" r="3.5" fill="#3b82f6" />
+          <circle cx="58" cy="45" r="4" fill="#10b981" />
+          <circle cx="65" cy="49" r="3.5" fill="#eab308" />
+          <circle cx="48" cy="51" r="3" fill="#a855f7" />
+        </svg>`
+      },
+      {
+        id: 'keyboard_dev',
+        name: 'กระทงคีย์บอร์ด IT',
+        desc: 'กด Ctrl+Z ให้ชีวิตปัง',
+        icon: '⌨️',
+        glow: '#06b6d4',
+        svg: `<svg viewBox="0 0 100 80" class="w-full h-full drop-shadow-[0_0_12px_rgba(6,182,212,0.8)]">
+          <ellipse cx="50" cy="14" rx="4" ry="9" fill="#22d3ee" class="candle-flame" />
+          <rect x="48" y="22" width="4.5" height="15" fill="#67e8f9" rx="1" />
+          <rect x="18" y="40" width="64" height="22" rx="5" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" />
+          <rect x="23" y="44" width="7" height="6" rx="1" fill="#334155" />
+          <rect x="33" y="44" width="7" height="6" rx="1" fill="#334155" />
+          <rect x="43" y="44" width="7" height="6" rx="1" fill="#0284c7" />
+          <rect x="53" y="44" width="7" height="6" rx="1" fill="#334155" />
+          <rect x="63" y="44" width="14" height="6" rx="1" fill="#059669" />
+          <rect x="25" y="52" width="22" height="6" rx="1" fill="#475569" />
+          <rect x="50" y="52" width="26" height="6" rx="1" fill="#64748b" />
+        </svg>`
+      },
+      {
+        id: 'coffee_energy',
+        name: 'กระทงแก้วกาแฟ',
+        desc: 'คาเฟอีนนำทางสู่ความรุ่งเรือง',
+        icon: '☕',
+        glow: '#d97706',
+        svg: `<svg viewBox="0 0 100 80" class="w-full h-full drop-shadow-[0_0_10px_rgba(245,158,11,0.7)]">
+          <ellipse cx="50" cy="14" rx="4" ry="9" fill="#ffb703" class="candle-flame" />
+          <rect x="48" y="22" width="4.5" height="14" fill="#fde68a" rx="1" />
+          <ellipse cx="50" cy="58" rx="36" ry="8" fill="#78350f" />
+          <path d="M30,38 L70,38 L64,56 L36,56 Z" fill="#b45309" />
+          <ellipse cx="50" cy="38" rx="20" ry="5" fill="#451a03" />
+          <path d="M70,40 C77,41 77,52 68,53" fill="none" stroke="#b45309" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M48,37 A2,2 0 0,1 50,39 A2,2 0 0,1 52,37 Q50,41 48,37" fill="#fef3c7" opacity="0.8" />
+        </svg>`
+      }
+    ];
+
+    const INITIAL_KRATHONGS = [
+      {
+        id: 'kr-1',
+        name: 'น้องมายด์ HR',
+        styleId: 'traditional',
+        message: 'ขอให้ไม่ปวดหลัง',
+        cheers: 28,
+        createdAt: '15 นาทีที่แล้ว',
+        x: 18,
+        y: 28,
+        speed: 0.045
+      },
+      {
+        id: 'kr-2',
+        name: 'โจรปล้นใจ',
+        styleId: 'keyboard_dev',
+        message: 'ขอให้ฝนไม่ตกตอนกำลังจะเลิกงาน',
+        cheers: 45,
+        createdAt: '30 นาทีที่แล้ว',
+        x: 52,
+        y: 50,
+        speed: 0.05
+      },
+      {
+        id: 'kr-3',
+        name: 'น้องหมูเด้ง',
+        styleId: 'coffee_energy',
+        message: 'ขอให้รวยๆๆๆ',
+        cheers: 39,
+        createdAt: '45 นาทีที่แล้ว',
+        x: 80,
+        y: 35,
+        speed: 0.038
+      },
+      {
+        id: 'kr-4',
+        name: 'คริสติน่า แซ่แต้',
+        styleId: 'fish_food',
+        message: 'ขอใจแลกเบอร์โทร 024338331',
+        cheers: 22,
+        createdAt: '1 ชั่วโมงที่แล้ว',
+        x: 35,
+        y: 65,
+        speed: 0.042
+      }
+    ];
+
+    // App State
+    let krathongs = [...INITIAL_KRATHONGS];
+    let selectedStyleId = 'traditional';
+    let selectedKrathongId = null;
+    let isAudioPlaying = false;
+    let audioContext = null;
+    let soundInterval = null;
+
+    /* ----------------------------------------------------
+       2. INITIALIZATION & FIREBASE REALTIME LISTENER
+    ---------------------------------------------------- */
+    window.addEventListener('DOMContentLoaded', () => {
+      initStars();
+      initSkyLanterns();
+      initWaterGlowRipples();
+      renderStyleSelector();
+      startRiverMotionLoop();
+
+      if (isFirebaseReady) {
+        listenToFirebaseKrathongs();
+      } else {
+        updateKrathongCount();
+        renderRiverKrathongs();
+      }
+
+      window.addEventListener('resize', () => {
+        initStars();
+      });
+    });
+
+    function listenToFirebaseKrathongs() {
+      const krathongsRef = db.ref('krathongs');
+      
+      krathongsRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        const existingMap = new Map(krathongs.map(k => [k.id, k]));
+        const firebaseList = [];
+
+        if (data) {
+          Object.keys(data).forEach((key) => {
+            const item = data[key];
+            const prev = existingMap.get(key);
+            firebaseList.push({
+              id: key,
+              name: item.name || 'ไม่ระบุชื่อ',
+              styleId: item.styleId || 'traditional',
+              message: item.message || '',
+              cheers: item.cheers || 0,
+              createdAt: formatTimeAgo(item.timestamp),
+              x: prev ? prev.x : (75 + Math.random() * 20),
+              y: prev ? prev.y : (25 + Math.random() * 48),
+              speed: prev ? prev.speed : (0.038 + Math.random() * 0.02)
+            });
+          });
+        }
+
+        krathongs = [...firebaseList.reverse(), ...INITIAL_KRATHONGS];
+        updateKrathongCount();
+        renderRiverKrathongs();
+
+        if (selectedKrathongId) {
+          const current = krathongs.find(k => k.id === selectedKrathongId);
+          if (current) {
+            document.getElementById('detailCheerCount').innerText = current.cheers;
+          }
+        }
+      });
+    }
+
+    function formatTimeAgo(timestamp) {
+      if (!timestamp) return 'เพิ่งลอยเมื่อสักครู่';
+      const diffSec = Math.floor((Date.now() - timestamp) / 1000);
+      if (diffSec < 60) return 'เพิ่งลอยเมื่อสักครู่';
+      const diffMin = Math.floor(diffSec / 60);
+      if (diffMin < 60) return `${diffMin} นาทีที่แล้ว`;
+      const diffHr = Math.floor(diffMin / 60);
+      if (diffHr < 24) return `${diffHr} ชั่วโมงที่แล้ว`;
+      return `${Math.floor(diffHr / 24)} วันที่แล้ว`;
+    }
+
+    /* ----------------------------------------------------
+       3. BACKGROUND VISUALS (Stars, Moon, Lanterns)
+    ---------------------------------------------------- */
+    function initStars() {
+      const canvas = document.getElementById('starsCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width = window.innerWidth;
+      const height = canvas.height = window.innerHeight;
+
+      const stars = [];
+      const starCount = Math.floor((width * height) / 3800);
+
+      for (let i = 0; i < starCount; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * (height * 0.65),
+          radius: Math.random() * 1.3 + 0.3,
+          alpha: Math.random(),
+          speed: Math.random() * 0.02 + 0.005
+        });
+      }
+
+      function drawStars() {
+        ctx.clearRect(0, 0, width, height);
+        stars.forEach(s => {
+          s.alpha += s.speed;
+          if (s.alpha > 1 || s.alpha < 0.1) s.speed = -s.speed;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(s.alpha)})`;
+          ctx.shadowBlur = 4;
+          ctx.shadowColor = '#fff';
+          ctx.fill();
+        });
+        requestAnimationFrame(drawStars);
+      }
+      drawStars();
+    }
+
+    function initSkyLanterns() {
+      const container = document.getElementById('skyLanterns');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const count = 9;
+      for (let i = 0; i < count; i++) {
+        createSkyLantern(container, i * 2.5);
+      }
+    }
+
+    function createSkyLantern(container, delay = 0) {
+      const lantern = document.createElement('div');
+      lantern.className = 'lantern';
+      const left = Math.random() * 85 + 5;
+      const duration = Math.random() * 10 + 18;
+      const size = Math.random() * 16 + 18;
+
+      lantern.style.left = `${left}%`;
+      lantern.style.bottom = '-60px';
+      lantern.style.animationDuration = `${duration}s`;
+      lantern.style.animationDelay = `${delay}s`;
+
+      lantern.innerHTML = `
+        <div style="width: ${size}px; height: ${size * 1.3}px;" 
+             class="bg-gradient-to-t from-amber-500 via-amber-300 to-yellow-100 rounded-t-md rounded-b-[2px] shadow-[0_0_20px_rgba(251,191,36,0.9)] opacity-90 flex items-end justify-center pb-0.5">
+          <div class="w-1.5 h-1.5 bg-white rounded-full animate-ping"></div>
+        </div>
+      `;
+      container.appendChild(lantern);
+    }
+
+    function initWaterGlowRipples() {
+      const container = document.getElementById('waterRipples');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      for (let i = 0; i < 15; i++) {
+        const ripple = document.createElement('div');
+        const x = Math.random() * 95;
+        const y = Math.random() * 80 + 10;
+        const width = Math.random() * 70 + 40;
+        const delay = Math.random() * 5;
+
+        ripple.className = 'absolute rounded-full bg-cyan-300/15 blur-sm pointer-events-none animate-pulse';
+        ripple.style.left = `${x}%`;
+        ripple.style.top = `${y}%`;
+        ripple.style.width = `${width}px`;
+        ripple.style.height = '3px';
+        ripple.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        ripple.style.animationDelay = `${delay}s`;
+        container.appendChild(ripple);
+      }
+    }
+
+    /* ----------------------------------------------------
+       4. RIVER & KRATHONG RENDERING & ANIMATION
+    ---------------------------------------------------- */
+    function renderRiverKrathongs() {
+      const stage = document.getElementById('riverStage');
+      if (!stage) return;
+      stage.innerHTML = '';
+
+      krathongs.forEach(item => {
+        const styleInfo = KRATHONG_STYLES.find(s => s.id === item.styleId) || KRATHONG_STYLES[0];
+        
+        const el = document.createElement('div');
+        el.id = `krathong-${item.id}`;
+        el.className = 'absolute cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-95 group z-20';
+        
+        const scale = 0.65 + (item.y / 100) * 0.6;
+        const zIndex = Math.floor(item.y * 10);
+        
+        el.style.left = `${item.x}%`;
+        el.style.top = `${item.y}%`;
+        el.style.zIndex = zIndex;
+        el.style.width = `${90 * scale}px`;
+        el.style.height = `${70 * scale}px`;
+
+        el.innerHTML = `
+          <div class="krathong-bob w-full h-full relative">
+            <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-4/5 h-3.5 bg-amber-400/25 blur-md rounded-full pointer-events-none"></div>
+            ${styleInfo.svg}
+            <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-0.5 rounded-full bg-slate-950/85 border border-amber-400/40 text-[10px] text-amber-200 pointer-events-none shadow-md opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all flex items-center gap-1 font-cute">
+              <span>${escapeHtml(item.name)}</span>
+              <span class="text-rose-400">❤️ ${item.cheers || 0}</span>
+            </div>
+          </div>
+        `;
+
+        el.onclick = (e) => {
+          e.stopPropagation();
+          openDetailModal(item);
+        };
+
+        stage.appendChild(el);
+      });
+    }
+
+    function startRiverMotionLoop() {
+      setInterval(() => {
+        krathongs.forEach(k => {
+          k.x -= (k.speed || 0.04);
+          k.y += Math.sin(k.x * 0.1) * 0.03;
+
+          if (k.x < -15) {
+            k.x = 105;
+            k.y = Math.random() * 55 + 15;
+          }
+
+          const el = document.getElementById(`krathong-${k.id}`);
+          if (el) {
+            el.style.left = `${k.x}%`;
+            el.style.top = `${k.y}%`;
+          }
+        });
+      }, 50);
+    }
+
+    function updateKrathongCount() {
+      const badge = document.getElementById('krathongCountBadge');
+      if (badge) badge.innerText = krathongs.length;
+    }
+
+    /* ----------------------------------------------------
+       5. MODAL INTERACTION & FORMS
+    ---------------------------------------------------- */
+    function renderStyleSelector() {
+      const container = document.getElementById('krathongSelector');
+      if (!container) return;
+      container.innerHTML = '';
+
+      KRATHONG_STYLES.forEach(style => {
+        const isSelected = style.id === selectedStyleId;
+        const btn = document.createElement('div');
+        btn.className = `cursor-pointer p-2.5 rounded-2xl border text-center transition-all ${
+          isSelected 
+            ? 'bg-amber-500/20 border-amber-400 shadow-md shadow-amber-400/20 scale-102' 
+            : 'bg-slate-900/60 border-slate-700 hover:border-slate-500'
+        }`;
+        btn.onclick = () => {
+          selectedStyleId = style.id;
+          renderStyleSelector();
+        };
+
+        btn.innerHTML = `
+          <div class="text-3xl mb-1">${style.icon}</div>
+          <div class="text-xs font-semibold text-white">${style.name}</div>
+          <div class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">${style.desc}</div>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function toggleAnonymous(checkbox) {
+      const nameInput = document.getElementById('authorName');
+      if (checkbox.checked) {
+        nameInput.value = 'บุคคลลึกลับประจำออฟฟิศ 🕶️';
+        nameInput.disabled = true;
+      } else {
+        nameInput.value = '';
+        nameInput.disabled = false;
+        nameInput.placeholder = 'เช่น พี่เอ HR, ลิซ่า BP';
+      }
+    }
+
+    function openCreateModal() {
+      const modal = document.getElementById('createModal');
+      const content = document.getElementById('createModalContent');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        content.classList.remove('scale-95');
+      }, 10);
+    }
+
+    function closeCreateModal() {
+      const modal = document.getElementById('createModal');
+      const content = document.getElementById('createModalContent');
+      modal.classList.add('opacity-0');
+      content.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('authorName').value.trim();
+      const message = document.getElementById('wishMessage').value.trim();
+
+      if (!name || !message) return;
+
+      const payload = {
+        name: name,
+        styleId: selectedStyleId,
+        message: message,
+        cheers: 1,
+        timestamp: Date.now()
+      };
+
+      if (isFirebaseReady) {
+        db.ref('krathongs').push(payload);
+      } else {
+        krathongs.unshift({
+          id: 'kr-' + Date.now(),
+          ...payload,
+          createdAt: 'เพิ่งลอยเมื่อสักครู่',
+          x: 88 + Math.random() * 5,
+          y: 40 + Math.random() * 30,
+          speed: 0.04 + Math.random() * 0.02
+        });
+        updateKrathongCount();
+        renderRiverKrathongs();
+      }
+
+      closeCreateModal();
+
+      spawnFloatingHeart(window.innerWidth / 2, window.innerHeight * 0.65, "✨ กระทงลอยสู่สายน้ำแล้ว ✨");
+      playWishSound();
+
+      document.getElementById('krathongForm').reset();
+      document.getElementById('authorName').disabled = false;
+      document.getElementById('anonCheck').checked = false;
+    }
+
+    /* ----------------------------------------------------
+       6. DETAIL MODAL & HEARTS / CHEERS
+    ---------------------------------------------------- */
+    function openDetailModal(item) {
+      selectedKrathongId = item.id;
+      const styleInfo = KRATHONG_STYLES.find(s => s.id === item.styleId) || KRATHONG_STYLES[0];
+
+      document.getElementById('detailKrathongIcon').innerText = styleInfo.icon;
+      document.getElementById('detailKrathongType').innerText = styleInfo.name;
+      document.getElementById('detailAuthor').innerText = item.name;
+      document.getElementById('detailTime').innerText = `ลอยเมื่อ: ${item.createdAt || 'ไม่นานมานี้'}`;
+      document.getElementById('detailMessage').innerText = item.message;
+      document.getElementById('detailCheerCount').innerText = item.cheers || 0;
+
+      const modal = document.getElementById('detailModal');
+      const content = document.getElementById('detailModalContent');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        content.classList.remove('scale-95');
+      }, 10);
+    }
+
+    function closeDetailModal() {
+      selectedKrathongId = null;
+      const modal = document.getElementById('detailModal');
+      const content = document.getElementById('detailModalContent');
+      modal.classList.add('opacity-0');
+      content.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    function cheerCurrentKrathong() {
+      if (!selectedKrathongId) return;
+      const target = krathongs.find(k => k.id === selectedKrathongId);
+      if (!target) return;
+
+      const nextCheers = (target.cheers || 0) + 1;
+
+      if (isFirebaseReady && !selectedKrathongId.startsWith('kr-')) {
+        db.ref(`krathongs/${selectedKrathongId}/cheers`).set(nextCheers);
+      } else {
+        target.cheers = nextCheers;
+        document.getElementById('detailCheerCount').innerText = nextCheers;
+        renderRiverKrathongs();
+      }
+      
+      playChimeNote(660);
+      spawnFloatingHeart(window.innerWidth / 2, window.innerHeight / 2, '💖 +1 กำลังใจ');
+    }
+
+    function spawnFloatingHeart(x, y, text = '❤️') {
+      const overlay = document.getElementById('floatingHeartsOverlay');
+      if (!overlay) return;
+
+      const heart = document.createElement('div');
+      heart.className = 'fixed font-bold text-rose-300 pointer-events-none transition-all duration-1000 transform -translate-x-1/2 font-cute z-50 text-sm md:text-base';
+      heart.style.left = `${x}px`;
+      heart.style.top = `${y}px`;
+      heart.innerText = text;
+      
+      overlay.appendChild(heart);
+
+      setTimeout(() => {
+        heart.style.transform = 'translate(-50%, -70px) scale(1.2)';
+        heart.style.opacity = '0';
+      }, 20);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 1050);
+    }
+
+    /* ----------------------------------------------------
+       7. FEED MODAL (VIEW ALL)
+    ---------------------------------------------------- */
+    function openFeedModal() {
+      const list = document.getElementById('feedList');
+      if (!list) return;
+      list.innerHTML = '';
+
+      krathongs.forEach(item => {
+        const styleInfo = KRATHONG_STYLES.find(s => s.id === item.styleId) || KRATHONG_STYLES[0];
+        const card = document.createElement('div');
+        card.className = 'p-4 rounded-2xl bg-slate-900/70 border border-slate-700/80 hover:border-amber-400/40 transition-colors';
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">${styleInfo.icon}</span>
+              <div>
+                <h4 class="font-bold text-sm text-white">${escapeHtml(item.name)}</h4>
+                <p class="text-[11px] text-slate-400">${escapeHtml(item.createdAt || 'ไม่นานมานี้')}</p>
+              </div>
+            </div>
+            <button onclick="cheerFromFeed('${item.id}', this)" class="px-2.5 py-1 rounded-lg bg-pink-500/20 hover:bg-pink-500/30 border border-pink-400/30 text-pink-300 text-xs flex items-center gap-1 active:scale-95 transition-transform">
+              <span>❤️</span>
+              <span class="font-bold cheer-num">${item.cheers || 0}</span>
+            </button>
+          </div>
+          
+          <div class="text-xs">
+            <p class="text-amber-100 font-cute leading-relaxed"><strong class="font-sans text-amber-300">✨ คำอธิษฐาน:</strong> ${escapeHtml(item.message)}</p>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+
+      const modal = document.getElementById('feedModal');
+      const content = document.getElementById('feedModalContent');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        content.classList.remove('scale-95');
+      }, 10);
+    }
+
+    function cheerFromFeed(krathongId, buttonEl) {
+      const target = krathongs.find(k => k.id === krathongId);
+      if (!target) return;
+
+      const nextCheers = (target.cheers || 0) + 1;
+
+      if (isFirebaseReady && !krathongId.startsWith('kr-')) {
+        db.ref(`krathongs/${krathongId}/cheers`).set(nextCheers);
+      } else {
+        target.cheers = nextCheers;
+        renderRiverKrathongs();
+      }
+
+      const numSpan = buttonEl.querySelector('.cheer-num');
+      if (numSpan) numSpan.innerText = nextCheers;
+      playChimeNote(720);
+    }
+
+    function closeFeedModal() {
+      const modal = document.getElementById('feedModal');
+      const content = document.getElementById('feedModalContent');
+      modal.classList.add('opacity-0');
+      content.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    /* ----------------------------------------------------
+       8. SOUND SYNTHESIZER (WEB AUDIO API)
+    ---------------------------------------------------- */
+    function initAudioContext() {
+      if (!audioContext) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioCtx();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+    }
+
+    function playChimeNote(freq = 520, duration = 1.2) {
+      if (!isAudioPlaying && !audioContext) return;
+      try {
+        initAudioContext();
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+
+        gain.gain.setValueAtTime(0.08, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+
+        osc.start();
+        osc.stop(audioContext.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function playWishSound() {
+      try {
+        initAudioContext();
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+          setTimeout(() => playChimeNote(freq, 1.8), idx * 120);
+        });
+      } catch (e) {}
+    }
+
+    function toggleAudio() {
+      initAudioContext();
+      isAudioPlaying = !isAudioPlaying;
+      const icon = document.getElementById('soundIcon');
+      const text = document.getElementById('soundText');
+
+      if (isAudioPlaying) {
+        icon.className = 'fa-solid fa-volume-high text-amber-400';
+        text.innerText = 'ปิดเสียงบรรยากาศ';
+        text.className = 'text-amber-300 hidden sm:inline';
+        
+        const scale = [392.00, 440.00, 523.25, 587.33, 659.25, 783.99];
+        soundInterval = setInterval(() => {
+          if (!isAudioPlaying) return;
+          const randomPitch = scale[Math.floor(Math.random() * scale.length)];
+          playChimeNote(randomPitch, 2.2);
+        }, 2800);
+      } else {
+        icon.className = 'fa-solid fa-volume-xmark text-slate-400';
+        text.innerText = 'เสียงบรรยากาศ';
+        text.className = 'text-slate-300 hidden sm:inline';
+        if (soundInterval) clearInterval(soundInterval);
+      }
+    }
+
+    /* ----------------------------------------------------
+       9. HELPERS
+    ---------------------------------------------------- */
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
