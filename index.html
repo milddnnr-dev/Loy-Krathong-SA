@@ -97,6 +97,9 @@
 </head>
 <body class="bg-[#070b19] text-white min-h-screen relative overflow-hidden flex flex-col justify-between">
 
+  <!-- ==================== AUDIO PLAYER (เพลงลอยกระทง) ==================== -->
+  <audio id="bgMusic" src="song.mp3" loop preload="auto"></audio>
+
   <!-- ==================== NIGHT SKY BACKGROUND ==================== -->
   <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden">
     <canvas id="starsCanvas" class="w-full h-full absolute inset-0"></canvas>
@@ -458,8 +461,6 @@
     let selectedKrathongId = null;
     let isAudioPlaying = false;
     let audioContext = null;
-    let musicTimeout = null;
-    let melodyStep = 0;
 
     /* ----------------------------------------------------
        2. INITIALIZATION & FIREBASE REALTIME LISTENER
@@ -863,7 +864,7 @@
         renderRiverKrathongs();
       }
       
-      playChimeNote(660, 0.6);
+      playChimeNote(660, 0.5);
       spawnFloatingHeart(window.innerWidth / 2, window.innerHeight / 2, '💖 +1 กำลังใจ');
     }
 
@@ -947,7 +948,7 @@
 
       const numSpan = buttonEl.querySelector('.cheer-num');
       if (numSpan) numSpan.innerText = nextCheers;
-      playChimeNote(720, 0.6);
+      playChimeNote(720, 0.5);
     }
 
     function closeFeedModal() {
@@ -961,34 +962,8 @@
     }
 
     /* ----------------------------------------------------
-       8. LOY KRATHONG MELODY SYNTHESIZER (รำวงลอยกระทง)
+       8. AUDIO PLAYER & CHIME EFFECTS
     ---------------------------------------------------- */
-    const NOTE_FREQS = {
-      C4: 261.63, D4: 293.66, E4: 329.63, G4: 392.00, A4: 440.00,
-      C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99, REST: 0
-    };
-
-    // ทำนองเพลง "รำวงลอยกระทง" (วันเพ็ญเดือนสิบสอง น้ำก็นองเต็มตลิ่ง...)
-    const LOY_KRATHONG_MELODY = [
-      // วัน-เพ็ญ-เดือน-สิบ-สอง
-      { n: 'G4', d: 0.35 }, { n: 'G4', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'D5', d: 0.75 },
-      // น้ำ-ก็-นอง-เต็ม-ต-ลิ่ง
-      { n: 'E5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'G4', d: 0.35 }, { n: 'A4', d: 0.75 },
-      // เรา-ทั้ง-หลาย-ชาย-หญิง
-      { n: 'C5', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'E5', d: 0.35 }, { n: 'G5', d: 0.75 },
-      // ส-นุก-กัน-จริง-วัน-ลอย-ก-ระ-ทง
-      { n: 'E5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'G4', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'C5', d: 0.9 },
-      { n: 'REST', d: 0.3 },
-      // ลอย-ลอย-ก-ระ-ทง (รอบ 1)
-      { n: 'G5', d: 0.45 }, { n: 'E5', d: 0.45 }, { n: 'D5', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'D5', d: 0.75 },
-      // ลอย-ลอย-ก-ระ-ทง (รอบ 2)
-      { n: 'E5', d: 0.45 }, { n: 'D5', d: 0.45 }, { n: 'C5', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'G4', d: 0.75 },
-      // ลอย-ก-ระ-ทง-กัน-แล้ว-ขอ-เชิญ-น้อง-แก้ว-ออก-มา-รำ-วง
-      { n: 'G4', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'E5', d: 0.35 }, { n: 'G5', d: 0.55 },
-      { n: 'E5', d: 0.35 }, { n: 'D5', d: 0.35 }, { n: 'C5', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'G4', d: 0.35 }, { n: 'A4', d: 0.35 }, { n: 'C5', d: 0.9 },
-      { n: 'REST', d: 0.8 }
-    ];
-
     function initAudioContext() {
       if (!audioContext) {
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -1000,37 +975,19 @@
     }
 
     function playChimeNote(freq = 520, duration = 0.6) {
-      if (!freq || freq === 0) return;
       try {
         initAudioContext();
         const osc = audioContext.createOscillator();
         const gain = audioContext.createGain();
-
-        // ใช้เสียงคล้ายระนาดเอก/กล่องดนตรีนุ่มๆ
-        osc.type = 'triangle';
+        osc.type = 'sine';
         osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-
-        gain.gain.setValueAtTime(0.001, audioContext.currentTime);
-        gain.gain.linearRampToValueAtTime(0.07, audioContext.currentTime + 0.03);
+        gain.gain.setValueAtTime(0.06, audioContext.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
-
         osc.connect(gain);
         gain.connect(audioContext.destination);
-
         osc.start();
         osc.stop(audioContext.currentTime + duration);
       } catch (e) {}
-    }
-
-    function playNextMelodyNote() {
-      if (!isAudioPlaying) return;
-      const item = LOY_KRATHONG_MELODY[melodyStep];
-      const freq = NOTE_FREQS[item.n];
-      if (freq > 0) {
-        playChimeNote(freq, item.d * 1.4);
-      }
-      melodyStep = (melodyStep + 1) % LOY_KRATHONG_MELODY.length;
-      musicTimeout = setTimeout(playNextMelodyNote, item.d * 1000);
     }
 
     function playWishSound() {
@@ -1043,22 +1000,27 @@
     }
 
     function toggleAudio() {
-      initAudioContext();
-      isAudioPlaying = !isAudioPlaying;
+      const bgMusic = document.getElementById('bgMusic');
       const icon = document.getElementById('soundIcon');
       const text = document.getElementById('soundText');
 
-      if (isAudioPlaying) {
-        icon.className = 'fa-solid fa-volume-high text-amber-400 animate-pulse';
-        text.innerText = 'ปิดเพลงลอยกระทง';
-        text.className = 'text-amber-300 hidden sm:inline';
-        melodyStep = 0;
-        playNextMelodyNote();
+      if (!isAudioPlaying) {
+        bgMusic.volume = 0.5;
+        bgMusic.play().then(() => {
+          isAudioPlaying = true;
+          icon.className = 'fa-solid fa-volume-high text-amber-400 animate-pulse';
+          text.innerText = 'ปิดเพลงลอยกระทง';
+          text.className = 'text-amber-300 hidden sm:inline';
+        }).catch((err) => {
+          console.error("Audio Play Error:", err);
+          alert("ไม่พบไฟล์เพลง song.mp3 กรุณาตรวจสอบว่าอัปโหลดไฟล์ song.mp3 ไว้ในโฟลเดอร์เดียวกับ index.html บน GitHub แล้ว");
+        });
       } else {
+        bgMusic.pause();
+        isAudioPlaying = false;
         icon.className = 'fa-solid fa-music text-slate-400';
         text.innerText = 'เปิดเพลงลอยกระทง';
         text.className = 'text-slate-300 hidden sm:inline';
-        if (musicTimeout) clearTimeout(musicTimeout);
       }
     }
 
